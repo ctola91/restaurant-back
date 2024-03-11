@@ -1,0 +1,14 @@
+version: '3.9'
+
+services:
+  database:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: YOUR_PASSWORD
+      MYSQL_DATABASE: YOUR_DATABASE
+    ports:
+      - 'YOUR_PORT:YOUR_PORT'
+    # volumes:
+    #   - ./data:/var/lib/mysql

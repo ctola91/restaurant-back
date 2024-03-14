@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
-import { Role } from './role.entity';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+// import { Role } from './role.entity';
+import { UserRole } from './UserRole';
 
 @Entity({ name: 'users' })
 export class User {
@@ -21,6 +22,13 @@ export class User {
   @Column({ default: true })
   isActive: boolean;
 
-  @ManyToOne(() => Role)
-  role: Role;
+  @Column({
+    type: 'enum',
+    enum: UserRole,
+    default: UserRole.GHOST,
+  })
+  role: UserRole;
+
+  // @ManyToOne(() => Role)
+  // role: Role;
 }

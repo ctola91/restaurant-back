@@ -8,8 +8,11 @@ export class UsersController {
 
   @UseGuards(AuthGuard)
   @Get('profile')
-  getProfile(@Request() req) {
+  async getProfile(@Request() req) {
     const id = req.user.id;
+    const user = await this.usersService.findOne(id);
+    delete user.password;
+
     return this.usersService.findOne(id);
   }
 }

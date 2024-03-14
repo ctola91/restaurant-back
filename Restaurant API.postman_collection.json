@@ -11,6 +11,23 @@
 			"item": [
 				{
 					"name": "/auth/login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = pm.response.json()\r",
+									"\r",
+									"let authToken = jsonData.value;\r",
+									"\r",
+									"pm.collectionVariables.set(\"TOKEN\", \"Bearer \" + authToken);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -43,7 +60,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3MTAxODUwNzUsImV4cCI6MTcxMDE4NTEzNX0.6kl-Cm5XpFvr3QoabK-_isBMN3bgT-PWjtkY2aSAWik",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3MTA0NTI0MDIsImV4cCI6MTcxMDQ1MjQ2Mn0.diSIlB9hlSeHUzQWewSQ1W93XO4UkBIQD24aTqNQM1E",
 								"type": "text"
 							}
 						],
@@ -55,6 +72,33 @@
 							"path": [
 								"auth",
 								"session"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/auth/register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"Kadmin123\",\r\n    \"firstname\": \"Juan\",\r\n    \"lastname\": \"Perez\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/auth/register",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"auth",
+								"register"
 							]
 						}
 					},
@@ -72,7 +116,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3MTAxODUwNzUsImV4cCI6MTcxMDE4NTEzNX0.6kl-Cm5XpFvr3QoabK-_isBMN3bgT-PWjtkY2aSAWik",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3MTA0NTI0MDIsImV4cCI6MTcxMDQ1MjQ2Mn0.diSIlB9hlSeHUzQWewSQ1W93XO4UkBIQD24aTqNQM1E",
 								"type": "text"
 							}
 						],
@@ -90,6 +134,16 @@
 					"response": []
 				}
 			]
+		}
+	],
+	"variable": [
+		{
+			"key": "authToken",
+			"value": ""
+		},
+		{
+			"key": "TOKEN",
+			"value": ""
 		}
 	]
 }

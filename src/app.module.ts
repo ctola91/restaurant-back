@@ -7,7 +7,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { User } from './users/entities/user.entity';
 import { ConfigModule } from '@nestjs/config';
-import { Role } from './users/entities/role.entity';
+import { ProductsModule } from './products/products.module';
+import { Product } from './products/entities/products.entity.';
 
 @Module({
   imports: [
@@ -21,11 +22,12 @@ import { Role } from './users/entities/role.entity';
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_DB,
-      entities: [User, Role],
+      entities: [User, Product],
       synchronize: true,
     }),
     AuthModule,
     UsersModule,
+    ProductsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 
 import { UsersService } from 'src/users/users.service';
 import { JwtService } from '@nestjs/jwt';
@@ -12,17 +16,22 @@ export class AuthService {
   ) {}
 
   async signIn(username: string, pass: string): Promise<any> {
-    const user = await this.usersService.findOneByUsername(username);
-    const isValidPassword = bcrypt.compareSync(pass, user?.password);
-    if (!isValidPassword) {
-      throw new UnauthorizedException();
+    try {
+      const user = await this.usersService.findOneByUsername(username);
+      const isValidPassword = bcrypt.compareSync(pass, user?.password);
+      if (!isValidPassword) {
+        throw new UnauthorizedException();
+      }
+
+      const payload = { sub: user.id, username: user.username };
+
+      return {
+        access_token: await this.jwtService.signAsync(payload),
+      };
+    } catch (e) {
+      console.log(e);
+      throw BadRequestException;
     }
-
-    const payload = { sub: user.id, username: user.username };
-
-    return {
-      access_token: await this.jwtService.signAsync(payload),
-    };
   }
 
   async signUp(
@@ -31,15 +40,20 @@ export class AuthService {
     firstname: string,
     lastname: string,
   ) {
-    const user = await this.usersService.createUser(
-      username,
-      password,
-      firstname,
-      lastname,
-    );
+    try {
+      const user = await this.usersService.createUser(
+        username,
+        password,
+        firstname,
+        lastname,
+      );
 
-    delete user.password;
+      delete user.password;
 
-    return user;
+      return user;
+    } catch (e) {
+      console.log(e);
+      throw BadRequestException;
+    }
   }
 }
